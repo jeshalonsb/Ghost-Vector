@@ -160,12 +160,11 @@ public class FirstPersonController : MonoBehaviour
         isSliding = false;
         forceCrouchForSlide = false;
         slideCrouched = false;
+        currentSlideSpeed = 0f;
+        slideDirection = Vector3.zero;
     }
     private void HandleSlide()
     {
-        if (isSliding && !isCrouching)
-            return;
-
         if (ShouldSlide && !isSliding)
         {
             isSliding = true;
@@ -193,14 +192,21 @@ public class FirstPersonController : MonoBehaviour
 
         slideTimer -= Time.deltaTime;
 
-        if (isSliding)
-            moveDirection = slideDirection * currentSlideSpeed;
+        float moveDirectionY = moveDirection.y;
 
-        currentSlideSpeed = Mathf.Lerp(currentSlideSpeed, 0, slideDeceleration * Time.deltaTime);
+        moveDirection = slideDirection * currentSlideSpeed;
+        moveDirection.y = moveDirectionY;
 
-        if (slideTimer <= 0)
+        currentSlideSpeed -= slideDeceleration * Time.deltaTime;
+
+        if (currentSlideSpeed < 0f)
+            currentSlideSpeed = 0f;
+
+        if (slideTimer <= 0f || currentSlideSpeed <= 0f)
         {
-            ResetSlideStates();
+            isSliding = false;
+            forceCrouchForSlide = false;
+            slideCrouched = false;
 
             currentSlideSpeed = 0f;
             slideDirection = Vector3.zero;
@@ -211,7 +217,9 @@ public class FirstPersonController : MonoBehaviour
             if (!Input.GetKey(crouchKey))
             {
                 if (!Physics.Raycast(playerCamera.transform.position, Vector3.up, 1f))
+                {
                     StartCoroutine(CrouchStand());
+                }
             }
         }
     }
