@@ -19,7 +19,7 @@ public class GunDamage : MonoBehaviour
         Ray gunRay = new Ray(PlayerCamera.position, PlayerCamera.forward);
         if (Physics.Raycast(gunRay, out RaycastHit hitInfo, BulletRange))
         {
-            if (hitInfo.collider.gameObject.TryGetComponent(out Enemy enemy))
+            if (hitInfo.collider.gameObject.TryGetComponent(out EnemyHealth enemy))
             {
                 enemy.Health -= Damage;
             }
