@@ -6,6 +6,7 @@ public class EnemyAi : MonoBehaviour
     [SerializeField] private float viewDistance = 25f;
     [SerializeField] private float viewAngle= 60f;
     [SerializeField] private float rateOfFire = 1f;
+    [SerializeField] public Transform eyePoint;
     private float shootTimer;
 
     [Header("Combat")]
@@ -25,6 +26,13 @@ public class EnemyAi : MonoBehaviour
     [SerializeField] AudioClip deathSound;
     [SerializeField] AudioClip Gunshot;
     [SerializeField] AudioClip detectionSound;
+
+    [Header("Scanning")]
+    [SerializeField] private Transform head;
+    [SerializeField] private float scanAngle = 45f;
+    [SerializeField] private float scanSpeed = 2f;
+
+    private float scanTimer;
 
     private Transform player;
     private bool playerDetected;
@@ -47,6 +55,8 @@ public class EnemyAi : MonoBehaviour
     void Update()
     {
         HandleDetection();
+        HandleScanning();
+        HandleAiming();
         HandleShoot();
         HandleAnimate();
     }
@@ -77,7 +87,7 @@ public class EnemyAi : MonoBehaviour
 
         RaycastHit hit;
 
-        if (Physics.Raycast(transform.position, directionToPlayer.normalized, out hit, viewDistance))
+        if (Physics.Raycast(eyePoint.position, directionToPlayer.normalized, out hit, viewDistance))
         {
             if (hit.transform.CompareTag("Player"))
             {
@@ -90,6 +100,25 @@ public class EnemyAi : MonoBehaviour
                 }
             }
         }
+    }
+    private void HandleScanning()
+    {
+        if (playerDetected || head == null) return;
+
+        scanTimer += Time.deltaTime * scanSpeed;
+
+        float angle = Mathf.Sin(scanTimer) * scanAngle;
+
+        head.localRotation = Quaternion.Euler(0f, angle, 0f);
+    }
+    private void HandleAiming()
+    {
+        if (playerDetected || head == null || player  == null) return; 
+
+        Vector3 direction = player.position - head.position;
+        Quaternion tragetRotation = Quaternion.LookRotation(direction);
+
+        head.rotation = Quaternion.Slerp(head.rotation, tragetRotation, Time.deltaTime * 5f);
     }
 
     private void HandleShoot()
@@ -109,20 +138,15 @@ public class EnemyAi : MonoBehaviour
     {
         AudioSource.PlayOneShot(Gunshot);
 
-        if (bulletPrefab != null && firePoint != null)
+        Vector3 direction = (player.position - firePoint.position).normalized;
+
+        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.LookRotation(direction));
+
+        Bullet bulletScript = bullet.GetComponent<Bullet>();
+
+        if (bulletScript != null)
         {
-            Vector3 direction = (player.position - firePoint.position).normalized;
-
-            GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.LookRotation(direction));
-
-            Rigidbody rb = bullet.GetComponent<Rigidbody>();
-
-            if ( rb != null)
-            {
-                rb.linearVelocity = direction * bulletSpeed;
-            }
-
-            Destroy(bullet, bulletLifetime);
+            bulletScript.Initailize(direction);
         }
     }
 
