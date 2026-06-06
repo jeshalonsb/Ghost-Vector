@@ -13,11 +13,11 @@ public class EnemyHealth : MonoBehaviour
         set
         {
             health = value;
-            Debug.Log(health);
+            Debug.Log("Enemy Health: " + health);
 
             if (health <= 0f)
             {
-                Destroy(gameObject);
+                Die();
             }
         }
     }
@@ -25,4 +25,16 @@ public class EnemyHealth : MonoBehaviour
     {
         Health = StartingHealth;
     }
+
+    public void TakeDamage(float damage)
+    {
+        Health -= damage;
+    }
+    private void Die()
+    {
+        Debug.Log("Enemy Died!");
+
+        Destroy(gameObject);
+    }
 }
+

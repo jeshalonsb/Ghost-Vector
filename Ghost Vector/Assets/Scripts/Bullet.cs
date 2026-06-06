@@ -8,10 +8,12 @@ public class Bullet : MonoBehaviour
     [SerializeField] private float lifetime = 3f;
 
     private Vector3 moveDirection;
+    private bool firedByPlayer;
 
-    public void Initailize(Vector3 direction)
+    public void Initailize(Vector3 direction, bool isPlayerBullet)
     {
         moveDirection = direction.normalized;
+        firedByPlayer = isPlayerBullet;
     }
     private void Start()
     {
@@ -24,13 +26,25 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        PlayerHealth health = other.GetComponentInParent<PlayerHealth>();
-
-        if (health != null)
+        if (firedByPlayer)
         {
-            health.TakeDamage(damage);
-        }
+            EnemyHealth enemy = other.GetComponent<EnemyHealth>();
 
-        Destroy(gameObject);
+            if (enemy != null)
+            {
+                enemy.TakeDamage(damage);
+                Destroy(gameObject);
+            }
+        }
+        else
+        {
+            PlayerHealth player = other.GetComponent<PlayerHealth>();
+
+            if (player != null)
+            {
+                player.TakeDamage(damage);
+                Destroy(gameObject);
+            }
+        }
     }
 }

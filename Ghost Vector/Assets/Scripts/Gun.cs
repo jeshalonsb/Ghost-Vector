@@ -1,46 +1,88 @@
 using UnityEngine.Events;
 using UnityEngine;
+using Unity.VisualScripting;
 
 public class Gun : MonoBehaviour
 {
+    [Header("Events")]
     public UnityEvent OnGunShoot;
-    public float FireCooldown;
 
+    [Header("Gun Settings")]
+    public float FireCooldown;
     public bool Automatic;
 
     private float CurrentCooldown;
+
+    [Header("Bullet")]
+    public GameObject bulletPrefab;
+    public Transform firePoint;
+    public float bulletLifetime = 3f;
 
     void Start()
     {
         CurrentCooldown = FireCooldown;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        HandleInput();
+        CurrentCooldown -= Time.deltaTime;
+    }
+    private void HandleInput()
+    {
         if (Automatic)
         {
             if (Input.GetMouseButton(0))
             {
-                if (CurrentCooldown <= 0f)
-                {
-                    OnGunShoot?.Invoke();
-                    CurrentCooldown = FireCooldown;
-                }
+                TryShoot();
             }
         }
         else
+        if (Input.GetMouseButtonDown(0))
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                if (CurrentCooldown <= 0f)
-                {
-                    OnGunShoot?.Invoke();
-                    CurrentCooldown = FireCooldown;
-                }
-            }
+            TryShoot();
         }
-        CurrentCooldown -= Time.deltaTime; 
+    }
+    private void TryShoot()
+    {
+        if (CurrentCooldown > 0f)
+            return;
+
+        Shoot();
+
+        OnGunShoot?.Invoke();
+
+        CurrentCooldown = FireCooldown;
+    }
+
+    private void Shoot()
+    {
+        Camera cam = Camera.main;
+
+        Ray ray = new Ray(cam.transform.position, cam.transform.forward);
+
+        Vector3 targetPoint;
+
+        if (Physics.Raycast(ray, out RaycastHit hit, 100f))
+        {
+            targetPoint = hit.point;
+        }
+        else
+        {
+            targetPoint = cam.transform.position + cam.transform.forward * 100f;
+        }
+
+        Vector3 direction = (targetPoint - firePoint.position).normalized;
+
+        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.LookRotation(direction));
+
+        Bullet bulletScript = bullet.GetComponent<Bullet>();
+
+        if (bulletScript != null)
+        {
+            bulletScript.Initailize(direction, true);
+        }
+
+        Destroy(bullet, bulletLifetime);
     }
 }

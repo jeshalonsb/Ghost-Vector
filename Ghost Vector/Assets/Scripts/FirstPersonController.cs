@@ -10,6 +10,8 @@ public class FirstPersonController : MonoBehaviour
     private bool ShouldCrouch => Input.GetKey(crouchKey) && !duringCrouchAnimation && characterController.isGrounded;
     private bool ShouldSlide => Input.GetKeyDown(slideKey) && IsSprinting && characterController.isGrounded;
 
+    [SerializeField] private PlayerHealth playerHealth;
+    
     [Header("Functional Options")]
     [SerializeField] private bool canSprint = true;
     [SerializeField] private bool canJump = true;
@@ -90,6 +92,9 @@ public class FirstPersonController : MonoBehaviour
 
     void Update()
     {
+        if (playerHealth != null && playerHealth.HealthPercent <= 0f)
+            return;
+
         if (CanMove)
         {
             HandleMovementInput();
@@ -117,12 +122,28 @@ public class FirstPersonController : MonoBehaviour
             ApplyFinalMovements();
         }
     }
+    private float GetHealthSpeedMultiplier()
+    {
+        if (playerHealth == null)
+            return 1f;
+
+        float hpPercent = playerHealth.HealthPercent;
+
+        return Mathf.Lerp(0.4f, 1f, hpPercent);
+    }
+    public void DisableMovement()
+    {
+        CanMove = false;
+        moveDirection = Vector3.zero;
+
+        characterController.enabled = false;
+    }
     private void HandleMovementInput()
     {
         if (isSliding)
             return;
         
-        currentInput = new Vector2((isCrouching ? crouchSpeed : IsSprinting ? sprintSpeed : walkSpeed) * Input.GetAxis("Vertical"), (isCrouching ? crouchSpeed : IsSprinting ? sprintSpeed : walkSpeed) * Input.GetAxis("Horizontal"));
+        currentInput = new Vector2((isCrouching ? crouchSpeed : IsSprinting ? sprintSpeed : walkSpeed) * GetHealthSpeedMultiplier() * Input.GetAxis("Vertical"), (isCrouching ? crouchSpeed : IsSprinting ? sprintSpeed : walkSpeed) * GetHealthSpeedMultiplier() * Input.GetAxis("Horizontal"));
 
         float moveDirectionY = moveDirection.y;
         moveDirection = (transform.TransformDirection(Vector3.forward) * currentInput.x) + (transform.TransformDirection(Vector3.right) * currentInput.y);

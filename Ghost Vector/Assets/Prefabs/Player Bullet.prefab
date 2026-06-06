@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1525492934285520766}
   - component: {fileID: 862801830149444272}
   m_Layer: 0
-  m_Name: 'Bullet '
+  m_Name: Player Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -106,7 +106,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Bullet
   damage: 10
-  speed: 50
+  speed: 100
   lifetime: 3
 --- !u!136 &1525492934285520766
 CapsuleCollider:

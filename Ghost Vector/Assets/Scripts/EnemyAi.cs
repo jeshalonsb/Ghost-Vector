@@ -7,6 +7,7 @@ public class EnemyAi : MonoBehaviour
     [SerializeField] private float viewAngle= 60f;
     [SerializeField] private float rateOfFire = 1f;
     [SerializeField] public Transform eyePoint;
+    
     private float shootTimer;
 
     [Header("Combat")]
@@ -33,6 +34,7 @@ public class EnemyAi : MonoBehaviour
     [SerializeField] private float scanSpeed = 2f;
 
     private float scanTimer;
+    private Quaternion baseHeadRotation;
 
     private Transform player;
     private bool playerDetected;
@@ -48,6 +50,11 @@ public class EnemyAi : MonoBehaviour
         }
 
         shootTimer = rateOfFire;
+
+        if (head != null)
+        {
+            baseHeadRotation = head.localRotation;
+        }
     }
 
 
@@ -59,6 +66,8 @@ public class EnemyAi : MonoBehaviour
         HandleAiming();
         HandleShoot();
         HandleAnimate();
+
+        Debug.DrawRay(eyePoint.position, (player != null ? (player.position - eyePoint.position).normalized : transform.forward) * 5f, Color.green);
     }
 
     private void HandleDetection()
@@ -107,9 +116,9 @@ public class EnemyAi : MonoBehaviour
 
         scanTimer += Time.deltaTime * scanSpeed;
 
-        float angle = Mathf.Sin(scanTimer) * scanAngle;
+        float angle = Mathf.PingPong(scanTimer, scanAngle * 2f) - scanAngle;
 
-        head.localRotation = Quaternion.Euler(0f, angle, 0f);
+        head.localRotation = baseHeadRotation * Quaternion.Euler(0f, angle, 0f);
     }
     private void HandleAiming()
     {
@@ -146,7 +155,7 @@ public class EnemyAi : MonoBehaviour
 
         if (bulletScript != null)
         {
-            bulletScript.Initailize(direction);
+            bulletScript.Initailize(direction, false);
         }
     }
 
@@ -154,23 +163,24 @@ public class EnemyAi : MonoBehaviour
     {
 
     }
-    
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, viewDistance);
 
-        Vector3 leftBoundary = Quaternion.Euler(0, -viewAngle / 2, 0) * transform.forward;
+        Transform origin = eyePoint != null ? eyePoint : transform;
 
-        Vector3 rightBoundary = Quaternion.Euler(0, viewAngle / 2, 0) * transform.forward;
+        Vector3 forward = transform.forward;
+
+        Vector3 leftBoundary = Quaternion.Euler(0, -viewAngle / 2, 0) * forward;
+        Vector3 rightBoundary = Quaternion.Euler(0, viewAngle / 2, 0) * forward;
 
         Gizmos.color = Color.red;
+        Gizmos.DrawRay(origin.position, leftBoundary * viewDistance);
+        Gizmos.DrawRay(origin.position, rightBoundary * viewDistance);
 
-        Gizmos.DrawRay(transform.position, leftBoundary * viewDistance);
-        Gizmos.DrawRay(transform.position, rightBoundary * viewDistance);
-
-        Gizmos.color = Color.blue; 
-        Gizmos.DrawRay(transform.position, transform.forward * viewDistance);
+        Gizmos.color = Color.blue;
+        Gizmos.DrawRay(origin.position, forward * viewDistance);
     }
-
 }
