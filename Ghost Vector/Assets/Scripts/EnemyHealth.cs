@@ -34,7 +34,17 @@ public class EnemyHealth : MonoBehaviour
     {
         Debug.Log("Enemy Died!");
 
-        Destroy(gameObject);
+        EnemyAi enemyAi = GetComponent<EnemyAi>();
+
+        if (enemyAi != null)
+        {
+            enemyAi.Die();
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+            
     }
 }
 

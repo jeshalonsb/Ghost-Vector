@@ -8,8 +8,6 @@ public class EnemyAi : MonoBehaviour
     [SerializeField] private float rateOfFire = 1f;
     [SerializeField] public Transform eyePoint;
     
-    private float shootTimer;
-
     [Header("Combat")]
     [SerializeField] private float damage = 10f;
     [SerializeField] private Transform firePoint;
@@ -22,23 +20,32 @@ public class EnemyAi : MonoBehaviour
     [Header("Animation")]
     public Animation RagDollEffect;
 
+    [Header("Scanning")]
+    [SerializeField] private Transform head;
+    [SerializeField] private float leftScanLimit = -60f;
+    [SerializeField] private float rightScanLimit = 60f;
+    [SerializeField] private float scanSpeed = 45f;
+
     [Header("Audio")]
     [SerializeField] AudioSource AudioSource;
     [SerializeField] AudioClip deathSound;
     [SerializeField] AudioClip Gunshot;
     [SerializeField] AudioClip detectionSound;
 
-    [Header("Scanning")]
-    [SerializeField] private Transform head;
-    [SerializeField] private float scanAngle = 45f;
-    [SerializeField] private float scanSpeed = 2f;
-
-    private float scanTimer;
-    private Quaternion baseHeadRotation;
-
     private Transform player;
+
     private bool playerDetected;
     private bool detectionSoundPlayed;
+
+    private float shootTimer;
+
+    private Quaternion baseHeadRotation;
+
+    private float currentScanAngle;
+    private bool scanningRight = true;
+
+    private bool isDead;
+
 
     private void Start()
     {
@@ -54,6 +61,7 @@ public class EnemyAi : MonoBehaviour
         if (head != null)
         {
             baseHeadRotation = head.localRotation;
+            currentScanAngle = leftScanLimit;
         }
     }
 
@@ -67,17 +75,20 @@ public class EnemyAi : MonoBehaviour
         HandleShoot();
         HandleAnimate();
 
-        Debug.DrawRay(eyePoint.position, (player != null ? (player.position - eyePoint.position).normalized : transform.forward) * 5f, Color.green);
+        if (eyePoint != null && head != null)
+        {
+            Debug.DrawRay(eyePoint.position, head.forward * viewDistance, playerDetected ? Color.red : Color.green);
+        }
     }
 
     private void HandleDetection()
     {
-        if (player == null)
+        if (player == null || eyePoint == null || head == null)
             return;
 
         playerDetected = false;
 
-        Vector3 directionToPlayer = player.position - transform.position;
+        Vector3 directionToPlayer = player.position - eyePoint.position;
         float distanceToPlayer = directionToPlayer.magnitude;
 
         if (distanceToPlayer > viewDistance)                                    //initial detection
@@ -86,7 +97,7 @@ public class EnemyAi : MonoBehaviour
                 return;
         }
         
-        float angle = Vector3.Angle(transform.forward, directionToPlayer);      //check FOV
+        float angle = Vector3.Angle(head.forward, directionToPlayer);      //check FOV
 
         if (angle > viewAngle * 0.5f)
         {
@@ -94,9 +105,8 @@ public class EnemyAi : MonoBehaviour
                 return;
         }
 
-        RaycastHit hit;
 
-        if (Physics.Raycast(eyePoint.position, directionToPlayer.normalized, out hit, viewDistance))
+        if (Physics.Raycast(eyePoint.position, directionToPlayer.normalized, out RaycastHit hit, distanceToPlayer))
         {
             if (hit.transform.CompareTag("Player"))
             {
@@ -104,7 +114,11 @@ public class EnemyAi : MonoBehaviour
 
                 if (!detectionSoundPlayed)
                 {
-                    AudioSource.PlayOneShot(detectionSound);
+                    if (detectionSound != null)
+                    {
+                        AudioSource.PlayOneShot(detectionSound);
+                    }
+
                     detectionSoundPlayed = true;
                 }
             }
@@ -112,22 +126,42 @@ public class EnemyAi : MonoBehaviour
     }
     private void HandleScanning()
     {
-        if (playerDetected || head == null) return;
+        if (playerDetected) return;
+        if (head == null) return;
 
-        scanTimer += Time.deltaTime * scanSpeed;
+        if (scanningRight)
+        {
+            currentScanAngle += scanSpeed * Time.deltaTime;
 
-        float angle = Mathf.PingPong(scanTimer, scanAngle * 2f) - scanAngle;
+            if (currentScanAngle >= rightScanLimit)
+            {
+                currentScanAngle = rightScanLimit;
+                scanningRight = false;
+            }
+        }
+        else
+        {
+            currentScanAngle -= scanSpeed * Time.deltaTime;
 
-        head.localRotation = baseHeadRotation * Quaternion.Euler(0f, angle, 0f);
+            if(currentScanAngle <= leftScanLimit)
+            {
+                currentScanAngle = leftScanLimit;
+                scanningRight = true;
+            }
+        }
+
+        head.localRotation = baseHeadRotation * Quaternion.Euler(0f, currentScanAngle, 0f);
     }
     private void HandleAiming()
     {
-        if (playerDetected || head == null || player  == null) return; 
+        if (!playerDetected) return;
+
+        if(head == null || player == null) return;
 
         Vector3 direction = player.position - head.position;
         Quaternion tragetRotation = Quaternion.LookRotation(direction);
 
-        head.rotation = Quaternion.Slerp(head.rotation, tragetRotation, Time.deltaTime * 5f);
+        head.rotation = Quaternion.Slerp(head.rotation, tragetRotation, Time.deltaTime * 8f);
     }
 
     private void HandleShoot()
@@ -145,7 +179,12 @@ public class EnemyAi : MonoBehaviour
 
     private void Shoot()
     {
-        AudioSource.PlayOneShot(Gunshot);
+        if (player == null || firePoint == null || bulletPrefab == null) return;
+
+        if (Gunshot != null)
+        {
+            AudioSource.PlayOneShot(Gunshot);
+        }
 
         Vector3 direction = (player.position - firePoint.position).normalized;
 
@@ -166,21 +205,37 @@ public class EnemyAi : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
+        if (eyePoint == null || head == null) return;
+        
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, viewDistance);
 
-        Transform origin = eyePoint != null ? eyePoint : transform;
+        Vector3 leftBoundary = Quaternion.Euler(0, -viewAngle * 0.5f, 0) * head.forward;
 
-        Vector3 forward = transform.forward;
-
-        Vector3 leftBoundary = Quaternion.Euler(0, -viewAngle / 2, 0) * forward;
-        Vector3 rightBoundary = Quaternion.Euler(0, viewAngle / 2, 0) * forward;
+        Vector3 rightBoundary = Quaternion.Euler(0, viewAngle * 0.5f, 0) * head.forward;
 
         Gizmos.color = Color.red;
-        Gizmos.DrawRay(origin.position, leftBoundary * viewDistance);
-        Gizmos.DrawRay(origin.position, rightBoundary * viewDistance);
+
+        Gizmos.DrawRay(eyePoint.position, leftBoundary * viewDistance);
+
+        Gizmos.DrawRay(eyePoint.position, rightBoundary * viewDistance);
 
         Gizmos.color = Color.blue;
-        Gizmos.DrawRay(origin.position, forward * viewDistance);
+
+        Gizmos.DrawRay(eyePoint.position, head.forward * viewDistance);
+    }
+
+    public void Die()
+    {
+        if (isDead) return;
+
+        isDead = true;
+
+        if (OnScreenUI.Instance != null)
+        {
+            OnScreenUI.Instance.EnemyKilled();
+        }
+
+        Destroy(gameObject);
     }
 }
