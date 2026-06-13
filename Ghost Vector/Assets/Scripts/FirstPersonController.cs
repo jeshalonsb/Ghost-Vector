@@ -71,6 +71,13 @@ public class FirstPersonController : MonoBehaviour
     private Vector3 slideDirection;
     private bool forceCrouchForSlide;
     private bool slideCrouched;
+    private float crouchLockoutTimer = 0f;
+
+
+    [Header("ADS Sensitivity")]
+    [SerializeField] private float adsSensitivityMultiplier = 0.5f;
+    [SerializeField] private Gun gun;
+
 
     private Camera playerCamera;
     private CharacterController characterController;
@@ -92,6 +99,8 @@ public class FirstPersonController : MonoBehaviour
 
     void Update()
     {
+        crouchLockoutTimer -= Time.deltaTime;
+        
         if (playerHealth != null && playerHealth.HealthPercent <= 0f)
             return;
 
@@ -153,10 +162,19 @@ public class FirstPersonController : MonoBehaviour
 
     private void HandleMouseLook()
     {
-        rotationX -= Input.GetAxis("Mouse Y") * lookSpeedY;
+        float sensitivityMultiplier = 1f;
+
+        if (gun != null && gun.IsADSing)
+        {
+            sensitivityMultiplier = adsSensitivityMultiplier;
+        }
+
+        rotationX -= Input.GetAxis("Mouse Y") * lookSpeedY * sensitivityMultiplier;
         rotationX = Mathf.Clamp(rotationX, -upperLookLimit, lowerLookLimit);
+
         playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
-        transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeedX, 0);
+
+        transform.rotation *= Quaternion.Euler( 0, Input.GetAxis("Mouse X") * lookSpeedX * sensitivityMultiplier, 0 );
     }
 
     private void HandleJump()
@@ -168,6 +186,9 @@ public class FirstPersonController : MonoBehaviour
     private void HandleCrouch()
     {       
         if (forceCrouchForSlide)
+            return;
+
+        if (crouchLockoutTimer > 0f)
             return;
         
         if (ShouldCrouch && !isCrouching)
@@ -235,6 +256,8 @@ public class FirstPersonController : MonoBehaviour
             moveDirection.x = 0f;
             moveDirection.z = 0f;
 
+            crouchLockoutTimer = 0.15f;
+
             if (!Input.GetKey(crouchKey))
             {
                 if (!Physics.Raycast(playerCamera.transform.position, Vector3.up, 1f))
@@ -266,7 +289,7 @@ public class FirstPersonController : MonoBehaviour
     }
     private IEnumerator CrouchStand()
     {
-        if (forceCrouchForSlide && !isCrouching)
+        if (forceCrouchForSlide && isCrouching)
             yield break;
         
         if (isCrouching && Physics.Raycast(playerCamera.transform.position, Vector3.up, 1f))

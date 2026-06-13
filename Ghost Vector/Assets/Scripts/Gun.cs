@@ -18,15 +18,34 @@ public class Gun : MonoBehaviour
     public Transform firePoint;
     public float bulletLifetime = 3f;
 
+    [Header("ADS")]
+    public float normalFOV = 60f;
+    public float adsFOV = 35f;
+    public float zoomSpeed = 1.0f;
+    public Vector3 hipPosition;
+    public Vector3 adsPosition;
+    public float adsMoveSpeed = 10f;
+
+    public bool IsADSing => Input.GetMouseButton(1);
+
+    private Camera playerCamera;
+
     void Start()
     {
         CurrentCooldown = FireCooldown;
+
+        playerCamera = Camera.main;
+        playerCamera.fieldOfView = normalFOV;
     }
 
     void Update()
     {
         HandleInput();
+        HandleADS(); 
         CurrentCooldown -= Time.deltaTime;
+
+        Vector3 targetPosition = Input.GetMouseButton(1) ? adsPosition : hipPosition;
+        transform.localPosition = Vector3.Lerp(transform.localPosition, targetPosition, adsMoveSpeed *  Time.deltaTime);
     }
     private void HandleInput()
     {
@@ -84,5 +103,11 @@ public class Gun : MonoBehaviour
         }
 
         Destroy(bullet, bulletLifetime);
+    }
+    private void HandleADS()
+    {
+        float targetFOV = Input.GetMouseButton(1) ? adsFOV : normalFOV;
+
+        playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, targetFOV, zoomSpeed *  Time.deltaTime);
     }
 }

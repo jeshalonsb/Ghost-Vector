@@ -18,7 +18,7 @@ public class EnemyAi : MonoBehaviour
     [SerializeField] private float bulletLifetime = 3f;
     
     [Header("Animation")]
-    public Animation RagDollEffect;
+    [SerializeField] private Animator animator;
 
     [Header("Scanning")]
     [SerializeField] private Transform head;
@@ -27,7 +27,7 @@ public class EnemyAi : MonoBehaviour
     [SerializeField] private float scanSpeed = 45f;
 
     [Header("Audio")]
-    [SerializeField] AudioSource AudioSource;
+    [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip deathSound;
     [SerializeField] AudioClip Gunshot;
     [SerializeField] AudioClip detectionSound;
@@ -49,6 +49,8 @@ public class EnemyAi : MonoBehaviour
 
     private void Start()
     {
+        animator = GetComponent<Animator>();
+        
         GameObject playerobj = GameObject.FindGameObjectWithTag("Player");
 
         if (playerobj != null)
@@ -116,7 +118,7 @@ public class EnemyAi : MonoBehaviour
                 {
                     if (detectionSound != null)
                     {
-                        AudioSource.PlayOneShot(detectionSound);
+                        audioSource.PlayOneShot(detectionSound);
                     }
 
                     detectionSoundPlayed = true;
@@ -183,7 +185,12 @@ public class EnemyAi : MonoBehaviour
 
         if (Gunshot != null)
         {
-            AudioSource.PlayOneShot(Gunshot);
+            audioSource.PlayOneShot(Gunshot);
+        }
+
+        if (animator != null)
+        {
+            animator.SetTrigger("Shoot");
         }
 
         Vector3 direction = (player.position - firePoint.position).normalized;
@@ -200,7 +207,9 @@ public class EnemyAi : MonoBehaviour
 
     private void HandleAnimate()
     {
+        if (animator == null) return;
 
+        animator.SetBool("isPlayerDetected", playerDetected);
     }
 
     private void OnDrawGizmosSelected()
