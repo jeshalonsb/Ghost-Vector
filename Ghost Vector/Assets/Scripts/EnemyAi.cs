@@ -245,6 +245,11 @@ public class EnemyAi : MonoBehaviour
             OnScreenUI.Instance.EnemyKilled();
         }
 
-        Destroy(gameObject);
+        if (animator  != null)
+        {
+            animator.SetTrigger("Die");
+        }
+
+        Destroy(gameObject, 3f);
     }
 }
