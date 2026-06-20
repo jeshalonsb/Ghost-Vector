@@ -71,6 +71,8 @@ public class EnemyAi : MonoBehaviour
 
     void Update()
     {
+        if (isDead) return;
+        
         HandleDetection();
         HandleScanning();
         HandleAiming();
@@ -99,7 +101,7 @@ public class EnemyAi : MonoBehaviour
                 return;
         }
         
-        float angle = Vector3.Angle(head.forward, directionToPlayer);      //check FOV
+        float angle = Vector3.Angle(head.forward, directionToPlayer.normalized);      //check FOV
 
         if (angle > viewAngle * 0.5f)
         {
@@ -107,16 +109,24 @@ public class EnemyAi : MonoBehaviour
                 return;
         }
 
-
         if (Physics.Raycast(eyePoint.position, directionToPlayer.normalized, out RaycastHit hit, distanceToPlayer))
         {
-            if (hit.transform.CompareTag("Player"))
+            Debug.Log("Hit: " + hit.transform.name);
+            Debug.Log("Tag: " + hit.transform.tag);
+
+            if (hit.transform.CompareTag("Player") ||
+                hit.transform.root.CompareTag("Player"))
+            {
+                Debug.Log("PLAYER DETECTED");
+                playerDetected = true;
+            }
+            if (hit.transform.CompareTag("Player") || hit.transform.root.CompareTag("Player"))
             {
                 playerDetected = true;
 
                 if (!detectionSoundPlayed)
                 {
-                    if (detectionSound != null)
+                    if (detectionSound != null && audioSource != null)
                     {
                         audioSource.PlayOneShot(detectionSound);
                     }
@@ -158,12 +168,17 @@ public class EnemyAi : MonoBehaviour
     {
         if (!playerDetected) return;
 
-        if(head == null || player == null) return;
+        if(player == null) return;
 
-        Vector3 direction = player.position - head.position;
-        Quaternion tragetRotation = Quaternion.LookRotation(direction);
+        Vector3 direction = player.position - transform.position;
+        direction.y = 0f;
 
-        head.rotation = Quaternion.Slerp(head.rotation, tragetRotation, Time.deltaTime * 8f);
+        if (direction == Vector3.zero) return;
+
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+        head.rotation = Quaternion.RotateTowards(head.rotation, targetRotation, scanSpeed * 4f * Time.deltaTime );
+
     }
 
     private void HandleShoot()
@@ -239,6 +254,8 @@ public class EnemyAi : MonoBehaviour
         if (isDead) return;
 
         isDead = true;
+        playerDetected = false;
+        detectionSoundPlayed = false;
 
         if (OnScreenUI.Instance != null)
         {
@@ -247,9 +264,17 @@ public class EnemyAi : MonoBehaviour
 
         if (animator  != null)
         {
+            animator.SetBool("isPlayerDetected", false);
+            animator.ResetTrigger("Shoot");
             animator.SetTrigger("Die");
         }
 
-        Destroy(gameObject, 3f);
+        Collider[] colliders = GetComponentsInChildren<Collider>();
+
+        foreach (Collider col  in colliders)
+        {
+            col.enabled = false;
+        }
+
     }
 }

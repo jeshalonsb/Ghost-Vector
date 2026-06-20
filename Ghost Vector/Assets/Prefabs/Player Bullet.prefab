@@ -106,7 +106,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Bullet
   damage: 10
-  speed: 100
+  speed: 250
   lifetime: 3
 --- !u!136 &1525492934285520766
 CapsuleCollider:

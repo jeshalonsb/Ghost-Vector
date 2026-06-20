@@ -1,6 +1,8 @@
 using UnityEngine.Events;
 using UnityEngine;
 using Unity.VisualScripting;
+using TMPro;
+using System.Collections;
 
 public class Gun : MonoBehaviour
 {
@@ -26,6 +28,23 @@ public class Gun : MonoBehaviour
     public Vector3 adsPosition;
     public float adsMoveSpeed = 10f;
 
+    [Header("Slide")]
+    [SerializeField] private FirstPersonController playerController;
+    [SerializeField] private Vector3 slidePosition;
+    [SerializeField] private Vector3 slideRotation;
+    [SerializeField] private float slideRotateSpeed = 10f;
+    private Quaternion startingRotation;
+
+    [Header("Ammo")]
+    [SerializeField] private int magazineSize = 12;
+    [SerializeField] private int currentAmmo;
+    [SerializeField] private float reloadTime = 1.5f;
+    [SerializeField] KeyCode reloadKey = KeyCode.R;
+    private bool isReloading;
+
+    [Header("UI")]
+    [SerializeField] private TextMeshProUGUI ammoText;
+
     public bool IsADSing => Input.GetMouseButton(1);
 
     private Camera playerCamera;
@@ -36,16 +55,45 @@ public class Gun : MonoBehaviour
 
         playerCamera = Camera.main;
         playerCamera.fieldOfView = normalFOV;
+
+        startingRotation = transform.localRotation;
+
+        currentAmmo = magazineSize;
+        UpdateAmmoUI();
     }
 
     void Update()
     {
+        if (Input.GetKeyDown(reloadKey))
+        {
+            StartCoroutine(Reload());
+        }
         HandleInput();
         HandleADS(); 
         CurrentCooldown -= Time.deltaTime;
 
-        Vector3 targetPosition = Input.GetMouseButton(1) ? adsPosition : hipPosition;
-        transform.localPosition = Vector3.Lerp(transform.localPosition, targetPosition, adsMoveSpeed *  Time.deltaTime);
+        Vector3 targetPosition;
+        Quaternion targetRotation;
+
+        if (Input.GetMouseButton(1))
+        {
+            targetPosition = adsPosition;
+            targetRotation = startingRotation;
+        }
+        else if (playerController != null && playerController.IsSliding)
+        {
+            targetPosition = slidePosition;
+            targetRotation = startingRotation * Quaternion.Euler(slideRotation);
+        }
+        else
+        {
+            targetPosition = hipPosition;
+            targetRotation = startingRotation;
+        }
+        
+        transform.localPosition = Vector3.Lerp( transform.localPosition, targetPosition, adsMoveSpeed *  Time.deltaTime );
+        
+        transform.localRotation = Quaternion.Slerp(transform.localRotation, targetRotation, slideRotateSpeed * Time.deltaTime);
     }
     private void HandleInput()
     {
@@ -64,10 +112,18 @@ public class Gun : MonoBehaviour
     }
     private void TryShoot()
     {
-        if (CurrentCooldown > 0f)
+        if (CurrentCooldown > 0f || isReloading)
             return;
+        
+        if (currentAmmo <= 0)
+        {
+            StartCoroutine(Reload());
+            return;
+        }
 
         Shoot();
+        currentAmmo--;
+        UpdateAmmoUI();
 
         OnGunShoot?.Invoke();
 
@@ -85,6 +141,13 @@ public class Gun : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, 100f))
         {
             targetPoint = hit.point;
+
+            EnemyHealth enemy = hit.collider.GetComponentInParent<EnemyHealth>();
+
+            if (enemy != null)
+            {
+                enemy.TakeDamage(1f);
+            }
         }
         else
         {
@@ -110,4 +173,32 @@ public class Gun : MonoBehaviour
 
         playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, targetFOV, zoomSpeed *  Time.deltaTime);
     }
+
+    private IEnumerator Reload()
+    {
+        if (ammoText != null)
+        {
+            ammoText.text = "RELOADING...";
+        }
+        
+        if (isReloading || currentAmmo == magazineSize)
+            yield break;
+
+        isReloading = true;
+
+        yield return new WaitForSeconds(reloadTime);
+
+        currentAmmo = magazineSize;
+        UpdateAmmoUI();
+        isReloading = false;
+    }
+
+    private void UpdateAmmoUI()
+    {
+        if (ammoText != null)
+        {
+            ammoText.text = currentAmmo + " / " + magazineSize;
+        }
+    }
+       
 }

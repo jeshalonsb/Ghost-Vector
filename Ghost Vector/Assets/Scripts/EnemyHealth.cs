@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
-    [SerializeField] private float StartingHealth;
+    [SerializeField] private float StartingHealth = 1f;
     private float health;
     public float Health 
     {
@@ -29,6 +29,8 @@ public class EnemyHealth : MonoBehaviour
     public void TakeDamage(float damage)
     {
         Health -= damage;
+
+        Debug.Log("Enemy Took Damage");
     }
     private void Die()
     {

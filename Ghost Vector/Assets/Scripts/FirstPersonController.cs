@@ -68,11 +68,13 @@ public class FirstPersonController : MonoBehaviour
     private float currentSlideSpeed;
     private float slideTimer;
     private bool isSliding;
+    public bool IsSliding => isSliding;
+    
     private Vector3 slideDirection;
     private bool forceCrouchForSlide;
     private bool slideCrouched;
     private float crouchLockoutTimer = 0f;
-
+    
 
     [Header("ADS Sensitivity")]
     [SerializeField] private float adsSensitivityMultiplier = 0.5f;
