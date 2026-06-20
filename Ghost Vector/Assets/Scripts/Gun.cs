@@ -45,6 +45,9 @@ public class Gun : MonoBehaviour
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI ammoText;
 
+    [Header("Animation")]
+    [SerializeField] private Animator weaponAnimator;
+
     public bool IsADSing => Input.GetMouseButton(1);
 
     private Camera playerCamera;
@@ -60,6 +63,11 @@ public class Gun : MonoBehaviour
 
         currentAmmo = magazineSize;
         UpdateAmmoUI();
+
+        if (weaponAnimator == null )
+        {
+            weaponAnimator = GetComponent<Animator>();
+        }
     }
 
     void Update()
@@ -71,6 +79,9 @@ public class Gun : MonoBehaviour
         HandleInput();
         HandleADS(); 
         CurrentCooldown -= Time.deltaTime;
+
+        if (isReloading)
+            return;
 
         Vector3 targetPosition;
         Quaternion targetRotation;
@@ -132,6 +143,11 @@ public class Gun : MonoBehaviour
 
     private void Shoot()
     {
+        if (weaponAnimator != null)
+        {
+            weaponAnimator.SetTrigger("Shoot");
+        }
+        
         Camera cam = Camera.main;
 
         Ray ray = new Ray(cam.transform.position, cam.transform.forward);
@@ -176,15 +192,20 @@ public class Gun : MonoBehaviour
 
     private IEnumerator Reload()
     {
+       if (isReloading || currentAmmo == magazineSize) 
+            yield break;
+
+        isReloading = true;
+
+        if (weaponAnimator != null)
+        {
+            weaponAnimator.SetTrigger("Reload");
+        }
+        
         if (ammoText != null)
         {
             ammoText.text = "RELOADING...";
         }
-        
-        if (isReloading || currentAmmo == magazineSize)
-            yield break;
-
-        isReloading = true;
 
         yield return new WaitForSeconds(reloadTime);
 
