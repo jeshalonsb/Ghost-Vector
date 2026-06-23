@@ -70,8 +70,6 @@ public class OnScreenUI : MonoBehaviour
     private void MissionComplete()
     {
         timerRunning = false;
-        
-        Debug.Log("Mission Complete!");
 
         StartCoroutine(RestartLevel());
     }

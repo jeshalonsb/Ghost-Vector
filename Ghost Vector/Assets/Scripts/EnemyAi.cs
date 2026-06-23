@@ -4,13 +4,25 @@ public class EnemyAi : MonoBehaviour
 {
     [Header("Detection Parameters")]
     [SerializeField] private float viewDistance = 25f;
-    [SerializeField] private float viewAngle= 60f;
+    [SerializeField] private float viewAngle = 60f;
     [SerializeField] private float rateOfFire = 1f;
     [SerializeField] public Transform eyePoint;
+    [SerializeField] LayerMask detectionMask = ~0;
+
+    [Header("Detection Tuning")]
+    [SerializeField] private float detectionAngle = 85f;
+    [SerializeField] private float detectionSphereRadius = 0.35f;
+    [SerializeField] private float shootAimAngle = 12f;
     
     [Header("Combat")]
     [SerializeField] private float damage = 10f;
     [SerializeField] private Transform firePoint;
+
+    [Header("Vision Cone")]
+    [SerializeField] private bool showVisionCone = true;
+    [SerializeField] Material visionConeMaterial;
+    [SerializeField] int coneResolution = 30;
+    [SerializeField] float coneHeightOffset = -0.05f;
 
     [Header("Bullet")]
     [SerializeField] private GameObject bulletPrefab;
@@ -25,6 +37,7 @@ public class EnemyAi : MonoBehaviour
     [SerializeField] private float leftScanLimit = -60f;
     [SerializeField] private float rightScanLimit = 60f;
     [SerializeField] private float scanSpeed = 45f;
+    [SerializeField] private float turnSpeed = 360f;
 
     [Header("Audio")]
     [SerializeField] AudioSource audioSource;
@@ -46,6 +59,10 @@ public class EnemyAi : MonoBehaviour
 
     private bool isDead;
 
+    private Mesh visionMesh;
+    private MeshFilter visionMeshFilter;
+    private MeshRenderer visionMeshRenderer;
+
 
     private void Start()
     {
@@ -65,6 +82,8 @@ public class EnemyAi : MonoBehaviour
             baseHeadRotation = head.localRotation;
             currentScanAngle = leftScanLimit;
         }
+
+        CreateVisionCone();
     }
 
 
@@ -78,11 +97,8 @@ public class EnemyAi : MonoBehaviour
         HandleAiming();
         HandleShoot();
         HandleAnimate();
+        UpdateVisionCone();
 
-        if (eyePoint != null && head != null)
-        {
-            Debug.DrawRay(eyePoint.position, head.forward * viewDistance, playerDetected ? Color.red : Color.green);
-        }
     }
 
     private void HandleDetection()
@@ -92,50 +108,49 @@ public class EnemyAi : MonoBehaviour
 
         playerDetected = false;
 
-        Vector3 directionToPlayer = player.position - eyePoint.position;
+        Vector3 targetPoint = player.position + Vector3.up * 0.6f;
+        Vector3 directionToPlayer = targetPoint - eyePoint.position;
         float distanceToPlayer = directionToPlayer.magnitude;
 
-        if (distanceToPlayer > viewDistance)                                    //initial detection
+        if (distanceToPlayer > viewDistance)
         {
             detectionSoundPlayed = false;
-                return;
+            return;
         }
-        
-        float angle = Vector3.Angle(head.forward, directionToPlayer.normalized);      //check FOV
+
+        float angle = Vector3.Angle(head.forward, directionToPlayer.normalized);
 
         if (angle > viewAngle * 0.5f)
         {
             detectionSoundPlayed = false;
-                return;
+            return;
         }
 
-        if (Physics.Raycast(eyePoint.position, directionToPlayer.normalized, out RaycastHit hit, distanceToPlayer))
-        {
-            Debug.Log("Hit: " + hit.transform.name);
-            Debug.Log("Tag: " + hit.transform.tag);
+        RaycastHit[] hits = Physics.SphereCastAll(eyePoint.position, detectionSphereRadius, directionToPlayer.normalized, viewDistance, detectionMask, QueryTriggerInteraction.Ignore);
 
-            if (hit.transform.CompareTag("Player") ||
-                hit.transform.root.CompareTag("Player"))
-            {
-                Debug.Log("PLAYER DETECTED");
-                playerDetected = true;
-            }
+        System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+        
+        foreach (RaycastHit hit in hits) 
+        {
+            if (hit.transform.root == transform) continue;
+            
             if (hit.transform.CompareTag("Player") || hit.transform.root.CompareTag("Player"))
             {
                 playerDetected = true;
 
-                if (!detectionSoundPlayed)
-                {
-                    if (detectionSound != null && audioSource != null)
-                    {
+                if (!detectionSound && detectionSound != null && audioSource != null)
                         audioSource.PlayOneShot(detectionSound);
-                    }
 
-                    detectionSoundPlayed = true;
-                }
+                detectionSoundPlayed = true;
+                return;
+
             }
+                         
+            detectionSoundPlayed = false;
+            return;
         }
     }
+
     private void HandleScanning()
     {
         if (playerDetected) return;
@@ -166,19 +181,24 @@ public class EnemyAi : MonoBehaviour
     }
     private void HandleAiming()
     {
-        if (!playerDetected) return;
+        if (!playerDetected || player == null) return;
 
-        if(player == null) return;
+        Vector3 bodyDirection = player.position - transform.position;
+        bodyDirection.y = 0f;
 
-        Vector3 direction = player.position - transform.position;
-        direction.y = 0f;
+       if (bodyDirection != Vector3.zero)
+        {
+            Quaternion bodyRotation = Quaternion.LookRotation(bodyDirection);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, bodyRotation, turnSpeed * Time.deltaTime);
+        }
 
-        if (direction == Vector3.zero) return;
+       Vector3 headDirection = player.position + Vector3.up * 1f - head.position;
 
-        Quaternion targetRotation = Quaternion.LookRotation(direction);
-
-        head.rotation = Quaternion.RotateTowards(head.rotation, targetRotation, scanSpeed * 4f * Time.deltaTime );
-
+       if (headDirection != Vector3.zero)
+        {
+            Quaternion headRotation = Quaternion.LookRotation(headDirection);
+            head.rotation = Quaternion.RotateTowards(head.rotation, headRotation, turnSpeed * Time.deltaTime);
+        }
     }
 
     private void HandleShoot()
@@ -198,26 +218,27 @@ public class EnemyAi : MonoBehaviour
     {
         if (player == null || firePoint == null || bulletPrefab == null) return;
 
-        if (Gunshot != null)
-        {
+        if (Gunshot != null && audioSource != null)
             audioSource.PlayOneShot(Gunshot);
-        }
 
         if (animator != null)
-        {
             animator.SetTrigger("Shoot");
-        }
 
-        Vector3 direction = (player.position - firePoint.position).normalized;
+        Vector3 direction = firePoint.forward;
 
-        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.LookRotation(direction));
+        GameObject bullet = Instantiate(
+            bulletPrefab,
+            firePoint.position,
+            firePoint.rotation
+        );
 
         Bullet bulletScript = bullet.GetComponent<Bullet>();
 
         if (bulletScript != null)
-        {
             bulletScript.Initailize(direction, false);
-        }
+
+        Destroy(bullet, bulletLifetime);
+
     }
 
     private void HandleAnimate()
@@ -227,6 +248,72 @@ public class EnemyAi : MonoBehaviour
         animator.SetBool("isPlayerDetected", playerDetected);
     }
 
+    private void CreateVisionCone()
+    {
+        if (!showVisionCone || eyePoint == null) return;
+
+        GameObject coneObj = new GameObject("Vision Cone");
+        coneObj.transform.SetParent(eyePoint, false);
+        coneObj.transform.localPosition = new Vector3(0f, coneHeightOffset, 0f);
+        coneObj.transform.localRotation = Quaternion.identity;
+
+        visionMeshFilter = coneObj.AddComponent<MeshFilter>();
+        visionMeshRenderer = coneObj.AddComponent<MeshRenderer>();
+
+        visionMesh = new Mesh();
+        visionMesh.name = "Enemy Vision Cone";
+        visionMeshFilter.mesh = visionMesh;
+
+        if (visionConeMaterial != null)
+            visionMeshRenderer.material = visionConeMaterial;
+    }
+
+    private void UpdateVisionCone()
+    {
+        if (!showVisionCone || visionMesh == null || eyePoint == null) return;
+
+        int circlePoints = coneResolution;
+        
+        Vector3[] vertices = new Vector3[coneResolution + 2];
+        int[] triangles = new int[coneResolution * 3];
+
+        vertices[0] = Vector3.zero;
+
+        float radius = Mathf.Tan(viewAngle * 0.5f * Mathf.Deg2Rad) * viewDistance;
+
+        for (int i = 0; i < circlePoints; i++)
+        {
+            float angle = ((float)i / circlePoints) * Mathf.PI * 2f;
+            float x = Mathf.Cos(angle) * radius;
+            float y = Mathf.Sin(angle) * radius;
+
+            vertices[i + 1] = new Vector3(x, y, viewDistance);
+        }
+
+        vertices [circlePoints + 1] = Vector3.zero;
+
+        for (int i = 0; i < coneResolution; i++)
+        {
+            int next = i + 1;
+
+            if (next >= circlePoints)
+                next = 0;
+            
+            triangles[i * 3] = 0;
+            triangles[i * 3 + 1] = i + 1;
+            triangles[i * 3 + 2] = next + 2;
+        }
+
+        visionMesh.Clear();
+        visionMesh.vertices = vertices;
+        visionMesh.triangles = triangles;
+        visionMesh.RecalculateNormals();
+
+        if (visionMeshRenderer != null)
+        {
+            visionMeshRenderer.enabled = showVisionCone; 
+        }
+    }   
     private void OnDrawGizmosSelected()
     {
         if (eyePoint == null || head == null) return;
@@ -274,6 +361,11 @@ public class EnemyAi : MonoBehaviour
         foreach (Collider col  in colliders)
         {
             col.enabled = false;
+        }
+
+        if (visionMeshRenderer != null)
+        {
+            visionMeshRenderer.gameObject.SetActive(false);
         }
 
     }

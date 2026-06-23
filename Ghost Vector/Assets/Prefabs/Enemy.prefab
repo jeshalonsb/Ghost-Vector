@@ -284,11 +284,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAi
   viewDistance: 15
-  viewAngle: 15
+  viewAngle: 8
   rateOfFire: 0.5
   eyePoint: {fileID: 8348322320503586174}
+  detectionMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  detectionAngle: 85
+  detectionSphereRadius: 0.35
+  shootAimAngle: 12
   damage: 10
   firePoint: {fileID: 3429450185499957864}
+  showVisionCone: 1
+  visionConeMaterial: {fileID: 2100000, guid: f781d4c92c0c6eb48b75b1ccddcc4f28, type: 2}
+  coneResolution: 150
+  coneHeightOffset: -0.05
   bulletPrefab: {fileID: 8569264890080595703, guid: d67a4ea85f4475b4eaf0d5a9fd057f20, type: 3}
   bulletSpeed: 50
   bulletLifetime: 3
@@ -297,6 +307,7 @@ MonoBehaviour:
   leftScanLimit: -7
   rightScanLimit: 7
   scanSpeed: 7
+  turnSpeed: 150
   audioSource: {fileID: 0}
   deathSound: {fileID: 0}
   Gunshot: {fileID: 0}
@@ -313,7 +324,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f088e129d7dcae44ca3cc4a1a0e26a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
-  StartingHealth: 0.1
+  StartingHealth: 1
 --- !u!136 &1095846145152841471
 CapsuleCollider:
   m_ObjectHideFlags: 0

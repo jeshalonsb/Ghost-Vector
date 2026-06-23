@@ -30,11 +30,9 @@ public class EnemyHealth : MonoBehaviour
     {
         Health -= damage;
 
-        Debug.Log("Enemy Took Damage");
     }
     private void Die()
     {
-        Debug.Log("Enemy Died!");
 
         EnemyAi enemyAi = GetComponent<EnemyAi>();
 
