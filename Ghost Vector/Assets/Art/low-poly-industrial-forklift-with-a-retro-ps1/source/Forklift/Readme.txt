@@ -1,0 +1,1 @@
+Thanks for purchasing! Format: FBX, Texture: 512x512. Created by SilMoon <3
