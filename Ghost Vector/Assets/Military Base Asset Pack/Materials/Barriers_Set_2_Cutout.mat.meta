@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: ddd2e23ecb3189f418b1592ed9040dcf
+timeCreated: 1519694536
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130618
+  packageName: Military Base Asset Pack
+  packageVersion: 1.2
+  assetPath: Assets/Military Base Asset Pack/Materials/Barriers_Set_2_Cutout.mat
+  uploadId: 587313

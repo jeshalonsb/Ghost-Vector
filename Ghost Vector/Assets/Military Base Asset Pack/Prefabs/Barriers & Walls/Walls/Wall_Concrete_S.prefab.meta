@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 8fdd2a1a6f7d36640baa88e83c6aafd7
+timeCreated: 1519707699
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130618
+  packageName: Military Base Asset Pack
+  packageVersion: 1.2
+  assetPath: Assets/Military Base Asset Pack/Prefabs/Barriers & Walls/Walls/Wall_Concrete_S.prefab
+  uploadId: 587313

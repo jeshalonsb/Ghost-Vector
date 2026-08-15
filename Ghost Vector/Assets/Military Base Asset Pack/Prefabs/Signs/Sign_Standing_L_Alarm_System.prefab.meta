@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 873e937eacc797b4e9e72cedb641b4b2
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130618
+  packageName: Military Base Asset Pack
+  packageVersion: 1.2
+  assetPath: Assets/Military Base Asset Pack/Prefabs/Signs/Sign_Standing_L_Alarm_System.prefab
+  uploadId: 587313

@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 69067cb7fb3d45e488bf9463e5fd14d8
+timeCreated: 1519707946
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130618
+  packageName: Military Base Asset Pack
+  packageVersion: 1.2
+  assetPath: Assets/Military Base Asset Pack/Prefabs/Barriers & Walls/Concrete Barriers/Barrier_Retaining.prefab
+  uploadId: 587313

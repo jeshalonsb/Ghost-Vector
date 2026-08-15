@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 9e4ec54ed6a81e5458499857be312221
+timeCreated: 1519707796
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130618
+  packageName: Military Base Asset Pack
+  packageVersion: 1.2
+  assetPath: Assets/Military Base Asset Pack/Prefabs/Barriers & Walls/Walls/Wall_Bremer_L.prefab
+  uploadId: 587313

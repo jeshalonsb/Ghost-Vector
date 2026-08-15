@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 3c72f0656db1303448f071ea8faac6cf
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130618
+  packageName: Military Base Asset Pack
+  packageVersion: 1.2
+  assetPath: Assets/Military Base Asset Pack/Prefabs/Signs/Sign_L_Checkpoint_Warning.prefab
+  uploadId: 587313

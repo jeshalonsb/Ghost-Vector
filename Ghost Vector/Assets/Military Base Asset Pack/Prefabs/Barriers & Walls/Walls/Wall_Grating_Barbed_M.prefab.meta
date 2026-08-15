@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: ed93438c3615e364c8e76d4077723334
+timeCreated: 1519707718
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130618
+  packageName: Military Base Asset Pack
+  packageVersion: 1.2
+  assetPath: Assets/Military Base Asset Pack/Prefabs/Barriers & Walls/Walls/Wall_Grating_Barbed_M.prefab
+  uploadId: 587313

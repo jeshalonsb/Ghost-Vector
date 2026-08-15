@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: bc449d9358ae2e14d92abcd8a6cb1a1a
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130618
+  packageName: Military Base Asset Pack
+  packageVersion: 1.2
+  assetPath: Assets/Military Base Asset Pack/Prefabs/Structures/Guard Posts & Towers/Guard_Tower_Support_Base.prefab
+  uploadId: 587313

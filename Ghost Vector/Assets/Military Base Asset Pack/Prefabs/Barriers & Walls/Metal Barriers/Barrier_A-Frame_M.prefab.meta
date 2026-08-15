@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 4db7343fa7a4d894584c7578f3ed78eb
+timeCreated: 1521671059
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130618
+  packageName: Military Base Asset Pack
+  packageVersion: 1.2
+  assetPath: Assets/Military Base Asset Pack/Prefabs/Barriers & Walls/Metal Barriers/Barrier_A-Frame_M.prefab
+  uploadId: 587313

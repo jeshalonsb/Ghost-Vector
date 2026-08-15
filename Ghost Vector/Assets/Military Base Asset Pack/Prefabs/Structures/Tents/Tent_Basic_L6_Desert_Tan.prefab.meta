@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 7ded048a89990864e9df78d6b1af63a6
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130618
+  packageName: Military Base Asset Pack
+  packageVersion: 1.2
+  assetPath: Assets/Military Base Asset Pack/Prefabs/Structures/Tents/Tent_Basic_L6_Desert_Tan.prefab
+  uploadId: 587313

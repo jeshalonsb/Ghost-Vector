@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f4368ec21fa912b4f9be441b0ae84b22
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130618
+  packageName: Military Base Asset Pack
+  packageVersion: 1.2
+  assetPath: Assets/Military Base Asset Pack/Prefabs/Signs/Sign_L_Checkpoint_Stop.prefab
+  uploadId: 587313

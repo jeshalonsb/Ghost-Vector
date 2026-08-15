@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: ae3ba50ce6eeb7f43aca295318137770
+timeCreated: 1519708296
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130618
+  packageName: Military Base Asset Pack
+  packageVersion: 1.2
+  assetPath: Assets/Military Base Asset Pack/Prefabs/Misc Items/Boardwalk_Wood.prefab
+  uploadId: 587313

@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 52dbd50b7e0821a418e04288e7ce5e34
+timeCreated: 1519708262
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130618
+  packageName: Military Base Asset Pack
+  packageVersion: 1.2
+  assetPath: Assets/Military Base Asset Pack/Prefabs/Barriers & Walls/Guide Rails/Guide_Rail_L.prefab
+  uploadId: 587313

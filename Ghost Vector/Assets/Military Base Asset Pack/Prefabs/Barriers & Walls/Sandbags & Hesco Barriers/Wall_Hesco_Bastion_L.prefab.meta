@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 03e6fa9ae8be97f4590c2317eb078b14
+timeCreated: 1519823389
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130618
+  packageName: Military Base Asset Pack
+  packageVersion: 1.2
+  assetPath: Assets/Military Base Asset Pack/Prefabs/Barriers & Walls/Sandbags &
+    Hesco Barriers/Wall_Hesco_Bastion_L.prefab
+  uploadId: 587313

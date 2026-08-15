@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 20739ea9ec2e9954187e57b89795fd06
+timeCreated: 1519708300
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130618
+  packageName: Military Base Asset Pack
+  packageVersion: 1.2
+  assetPath: Assets/Military Base Asset Pack/Prefabs/Misc Items/Pile_Dirt.prefab
+  uploadId: 587313

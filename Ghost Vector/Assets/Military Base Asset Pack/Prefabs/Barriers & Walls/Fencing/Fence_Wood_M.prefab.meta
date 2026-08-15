@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 61bc08954bf77ac4ea8115b4ef33eade
+timeCreated: 1519708236
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130618
+  packageName: Military Base Asset Pack
+  packageVersion: 1.2
+  assetPath: Assets/Military Base Asset Pack/Prefabs/Barriers & Walls/Fencing/Fence_Wood_M.prefab
+  uploadId: 587313

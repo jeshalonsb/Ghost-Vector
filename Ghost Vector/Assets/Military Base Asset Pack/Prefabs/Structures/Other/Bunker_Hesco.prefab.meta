@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 046182adb3c4297458386d8a10cbc9e6
+timeCreated: 1519715651
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130618
+  packageName: Military Base Asset Pack
+  packageVersion: 1.2
+  assetPath: Assets/Military Base Asset Pack/Prefabs/Structures/Other/Bunker_Hesco.prefab
+  uploadId: 587313

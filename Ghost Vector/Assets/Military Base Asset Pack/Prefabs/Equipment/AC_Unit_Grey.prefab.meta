@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 59de9e4f3606b5241bf1a2e24b1b6a46
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130618
+  packageName: Military Base Asset Pack
+  packageVersion: 1.2
+  assetPath: Assets/Military Base Asset Pack/Prefabs/Equipment/AC_Unit_Grey.prefab
+  uploadId: 587313

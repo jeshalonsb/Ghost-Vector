@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 5d52a04ea9ce47d4e9bd361a3e1f3d16
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130618
+  packageName: Military Base Asset Pack
+  packageVersion: 1.2
+  assetPath: Assets/Military Base Asset Pack/Prefabs/Structures/Walkways/Walkway_Support_1m.prefab
+  uploadId: 587313

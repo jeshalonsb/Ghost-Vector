@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 68f60c40b5f41e84bb7de0756d20bb34
+timeCreated: 1519707707
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130618
+  packageName: Military Base Asset Pack
+  packageVersion: 1.2
+  assetPath: Assets/Military Base Asset Pack/Prefabs/Barriers & Walls/Walls/Wall_Concrete_Barbed_S.prefab
+  uploadId: 587313

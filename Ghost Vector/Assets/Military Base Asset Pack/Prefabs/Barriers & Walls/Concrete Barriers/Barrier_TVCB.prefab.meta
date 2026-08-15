@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 71507c24dfc37af468ebc3cfd5180508
+timeCreated: 1519707938
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130618
+  packageName: Military Base Asset Pack
+  packageVersion: 1.2
+  assetPath: Assets/Military Base Asset Pack/Prefabs/Barriers & Walls/Concrete Barriers/Barrier_TVCB.prefab
+  uploadId: 587313

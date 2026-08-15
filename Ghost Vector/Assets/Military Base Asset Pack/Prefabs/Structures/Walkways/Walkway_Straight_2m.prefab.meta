@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c0ce844ff74aa784e994264af7867734
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 130618
+  packageName: Military Base Asset Pack
+  packageVersion: 1.2
+  assetPath: Assets/Military Base Asset Pack/Prefabs/Structures/Walkways/Walkway_Straight_2m.prefab
+  uploadId: 587313
