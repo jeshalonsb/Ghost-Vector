@@ -13,6 +13,7 @@ public class OnScreenUI : MonoBehaviour
     [SerializeField] private float restartDelay = 3f;
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private TextMeshProUGUI finalTimeText;
+    [SerializeField] private TextMeshProUGUI flashlightText;
 
     private float levelTimer;
     private bool timerRunning;
@@ -33,6 +34,8 @@ public class OnScreenUI : MonoBehaviour
         timerRunning = true;
 
         UpdateUI();
+
+        flashlightText.text = "F: Toggle Flashlight";
     }
 
     private void Update()
