@@ -48,6 +48,11 @@ public class Gun : MonoBehaviour
     [Header("Animation")]
     [SerializeField] private Animator weaponAnimator;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip gunShot;
+    [SerializeField] private AudioClip reloadShot;
+
     public bool IsADSing => Input.GetMouseButton(1);
 
     private Camera playerCamera;
@@ -181,6 +186,8 @@ public class Gun : MonoBehaviour
             bulletScript.Initailize(direction, true);
         }
 
+        audioSource.PlayOneShot(gunShot);
+
         Destroy(bullet, bulletLifetime);
     }
     private void HandleADS()
@@ -200,6 +207,8 @@ public class Gun : MonoBehaviour
         if (weaponAnimator != null)
         {
             weaponAnimator.SetTrigger("Reload");
+
+            audioSource.PlayOneShot(reloadShot);
         }
         
         if (ammoText != null)

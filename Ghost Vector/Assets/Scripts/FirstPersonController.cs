@@ -153,7 +153,7 @@ public class FirstPersonController : MonoBehaviour
     {
         if (isSliding)
             return;
-        
+
         currentInput = new Vector2((isCrouching ? crouchSpeed : IsSprinting ? sprintSpeed : walkSpeed) * GetHealthSpeedMultiplier() * Input.GetAxis("Vertical"), (isCrouching ? crouchSpeed : IsSprinting ? sprintSpeed : walkSpeed) * GetHealthSpeedMultiplier() * Input.GetAxis("Horizontal"));
 
         float moveDirectionY = moveDirection.y;
