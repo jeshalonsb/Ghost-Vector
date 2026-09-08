@@ -30113,6 +30113,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TANSUITENEMY
       objectReference: {fileID: 0}
+    - target: {fileID: 5549909042194896965, guid: 5e810650a6ca24245b3cdee3c6f2f89f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5549909042195252325, guid: 5e810650a6ca24245b3cdee3c6f2f89f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 542.71
@@ -35288,6 +35292,10 @@ PrefabInstance:
     - target: {fileID: 5549909042194896965, guid: 5e810650a6ca24245b3cdee3c6f2f89f, type: 3}
       propertyPath: m_Name
       value: TANSUITENEMY (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5549909042194896965, guid: 5e810650a6ca24245b3cdee3c6f2f89f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5549909042195252325, guid: 5e810650a6ca24245b3cdee3c6f2f89f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -40521,6 +40529,10 @@ PrefabInstance:
     - target: {fileID: 5549909042194896965, guid: 5e810650a6ca24245b3cdee3c6f2f89f, type: 3}
       propertyPath: m_Name
       value: TANSUITENEMY (10)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5549909042194896965, guid: 5e810650a6ca24245b3cdee3c6f2f89f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5549909042195252325, guid: 5e810650a6ca24245b3cdee3c6f2f89f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -45808,6 +45820,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TANSUITENEMY (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 5549909042194896965, guid: 5e810650a6ca24245b3cdee3c6f2f89f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5549909042195252325, guid: 5e810650a6ca24245b3cdee3c6f2f89f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 545.5878
@@ -47763,6 +47779,10 @@ PrefabInstance:
     - target: {fileID: 5549909042194896965, guid: 5e810650a6ca24245b3cdee3c6f2f89f, type: 3}
       propertyPath: m_Name
       value: TANSUITENEMY (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5549909042194896965, guid: 5e810650a6ca24245b3cdee3c6f2f89f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5549909042195252325, guid: 5e810650a6ca24245b3cdee3c6f2f89f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -53280,7 +53300,7 @@ MonoBehaviour:
   priority: 0
   blendDistance: 0
   weight: 1
-  sharedProfile: {fileID: 11400000, guid: 22360ee6772c36f4f96b7fa906465c2f, type: 2}
+  sharedProfile: {fileID: 11400000, guid: 14646ae0c2251ba4fbc4eaa73c8e35d6, type: 2}
 --- !u!4 &930515096
 Transform:
   m_ObjectHideFlags: 0
@@ -54110,7 +54130,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 91, y: 131}
+  m_AnchoredPosition: {x: 188, y: 384}
   m_SizeDelta: {x: 363.0516, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &940110370
@@ -54167,7 +54187,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -54199,7 +54219,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 10.428532, w: 9.265076}
+  m_margin: {x: 0, y: 0, z: 168.41718, w: 9.265076}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -69464,6 +69484,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TANSUITENEMY (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 5549909042194896965, guid: 5e810650a6ca24245b3cdee3c6f2f89f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5549909042195252325, guid: 5e810650a6ca24245b3cdee3c6f2f89f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 523.7211
@@ -78951,6 +78975,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TANSUITENEMY (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 5549909042194896965, guid: 5e810650a6ca24245b3cdee3c6f2f89f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5549909042195252323, guid: 5e810650a6ca24245b3cdee3c6f2f89f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.000018209073
@@ -85816,6 +85844,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TANSUITENEMY (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 5549909042194896965, guid: 5e810650a6ca24245b3cdee3c6f2f89f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5549909042195252325, guid: 5e810650a6ca24245b3cdee3c6f2f89f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 539.174
@@ -87971,6 +88003,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TANSUITENEMY (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 5549909042194896965, guid: 5e810650a6ca24245b3cdee3c6f2f89f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5549909042195252325, guid: 5e810650a6ca24245b3cdee3c6f2f89f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 545.88
@@ -89552,6 +89588,10 @@ PrefabInstance:
     - target: {fileID: 5549909042194896965, guid: 5e810650a6ca24245b3cdee3c6f2f89f, type: 3}
       propertyPath: m_Name
       value: TANSUITENEMY (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5549909042194896965, guid: 5e810650a6ca24245b3cdee3c6f2f89f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5549909042195252325, guid: 5e810650a6ca24245b3cdee3c6f2f89f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -96618,6 +96658,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TANSUITENEMY (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 5549909042194896965, guid: 5e810650a6ca24245b3cdee3c6f2f89f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5549909042195252325, guid: 5e810650a6ca24245b3cdee3c6f2f89f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 523.08
@@ -102253,7 +102297,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -12, y: 448}
+  m_AnchoredPosition: {x: -22, y: 448}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1828964791
